@@ -28,7 +28,12 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    setModalOpen(false);
+    sessionStorage.removeItem("access-token");
+    sessionStorage.removeItem("emailId");
+    sessionStorage.removeItem("doctorId");
+    sessionStorage.removeItem("appointmentId");
+    //TODO: need to complete the logout section
+    dispatch({ type: "LOGOUT" });
   };
 
   const handleTabChange = (event, newValue) => {
