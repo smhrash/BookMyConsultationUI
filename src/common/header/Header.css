@@ -1,26 +1,48 @@
-.header {
+.header-container {
   background-color: purple;
   height: 70px;
   padding: 11px;
+  display: flex;
+  align-items: center;
 }
-.header img {
+.header-logo {
   background-color: #ff7f7f;
   height: 35px;
-  float: left;
+  display: flex;
+  align-items: left;
 }
-.header #header-title {
+.header-title-text {
+  color: white;
+  text-align: left;
+}
+
+.header-buttons {
+  margin-left: auto;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  right: auto;
+  bottom: auto;
+  height: auto;
+  padding: 0px;
+  margin-right: "-50%";
+  border: 0.1px solid #d3d3d3;
+}
+
+.paper-container {
+  border-radius: 5;
+  padding: 5;
+  border: 0.1px solid #d3d3d3;
+}
+.modal-title {
+  background-color: purple;
+  color: white;
   font-size: x-large;
-  font-weight: normal;
-  color: white;
-}
-.header button {
-  float: right;
-  margin-top: -30px;
-}
-.typography {
-  background-color: #800080;
-  color: white;
-  font-size: large;
   font-weight: 400;
-  padding: 5px 5px 5px 8px;
+  padding: 10% 0;
+  height: 70%;
 }

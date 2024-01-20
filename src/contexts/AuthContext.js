@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useReducer } from "react";
+import { createContext, useEffect, useReducer, useMemo } from "react";
 
 export const AuthContext = createContext();
 
@@ -6,12 +6,10 @@ export const authReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       return { ...state, userToken: action.payload };
-
     case "AUTH_IS_READY":
       return { ...state, userToken: action.payload, authIsReady: true };
     case "LOGOUT":
       return { ...state, userToken: null };
-
     default:
       return state;
   }
@@ -23,7 +21,7 @@ export const AuthContextProvider = ({ children }) => {
     authIsReady: false,
   });
 
-  const authContextValue = useMemo(
+  const contextValue = useMemo(
     () => ({ ...state, dispatch }),
     [state, dispatch]
   );
@@ -34,8 +32,6 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={authContextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
