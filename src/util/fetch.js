@@ -55,22 +55,33 @@ export const logoutFetch = async () => {
   }
 };
 
-export const RegisterFetch = async () => {
-  const token = sessionStorage.getItem("access-token");
-  await fetch("http://localhost:8080/auth/register", {
+export const RegisterFetch = async (
+  firstName,
+  lastName,
+  mobile,
+  password,
+  emailId
+) => {
+  const response = await fetch("http://localhost:8080/users/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
     },
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      throw new Error("Error while logout");
-    });
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      mobile,
+      password,
+      emailId,
+    }),
+  }).catch((error) => {
+    console.log(error);
+    throw new Error("Error while registration");
+  });
+  if (response.status === 200) {
+    return response.status;
+  } else if (response.status === 409) {
+    return "error";
+  }
 };

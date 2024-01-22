@@ -4,7 +4,6 @@ import {
   Input,
   InputLabel,
   Button,
-  Snackbar,
   FormHelperText,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
@@ -12,6 +11,8 @@ import { Alert } from "@material-ui/lab";
 import "./Login.css";
 import { AuthContext } from "../../contexts/AuthContext";
 import { loginFetch } from "../../util/fetch";
+
+import SnackBarAlert from "../../common/SnackBar/SnackBarAlert";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -60,6 +61,12 @@ const Login = (props) => {
     }
   };
 
+  /**
+   * Handles the form submission for login.
+   *
+   * @param {Event} e - The form submission event.
+   * @returns {Promise<void>} - A promise that resolves when the login process is complete.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -100,7 +107,7 @@ const Login = (props) => {
         onSubmit={handleSubmit}
       >
         {/* Email Section */}
-        <div className="margin-container">
+        <div className="margin-container-login">
           <FormControl variant="standard" required>
             <InputLabel htmlFor="email" shrink={false}>
               Email
@@ -110,11 +117,11 @@ const Login = (props) => {
               type="email"
               value={email}
               onChange={handleEmailChange}
-              placeholder="Email"
               style={{ width: "100%", marginTop: "50px" }}
               onFocus={() => {
                 setEmailPatternValidate(false);
                 setUnAuthorizedAlert(false);
+                setEmailBlank(false);
               }}
             ></Input>
             {emailPatternValidate === true && email.length > 0 && (
@@ -122,24 +129,14 @@ const Login = (props) => {
                 Enter Valid Email
               </FormHelperText>
             )}
+            {email.length === 0 && emailBlank && (
+              <SnackBarAlert message="Please fill out this field" />
+            )}
           </FormControl>
-          {email.length === 0 && emailBlank && (
-            <Snackbar
-              open
-              message="Please fill out this field"
-              onClose={() => setEmailBlank(false)}
-              style={{
-                position: "relative",
-                top: "20%",
-                left: 0,
-                paddingTop: "10px",
-              }}
-            ></Snackbar>
-          )}
         </div>
 
         {/* Password Section */}
-        <div className="margin-container">
+        <div className="margin-container-login">
           <FormControl variant="standard" required>
             <InputLabel htmlFor="password" shrink={false}>
               Password
@@ -151,21 +148,12 @@ const Login = (props) => {
               onChange={handlePasswordChange}
               onFocus={() => {
                 setUnAuthorizedAlert(false);
+                setPasswordBlank(false);
               }}
               style={{ width: "100%", marginTop: "50px" }}
             ></Input>
             {password.length === 0 && passwordBlank && (
-              <Snackbar
-                open
-                message="Please fill out this field"
-                onClose={() => setPasswordBlank(false)}
-                style={{
-                  position: "relative",
-                  top: "20%",
-                  left: 0,
-                  paddingTop: "10px",
-                }}
-              ></Snackbar>
+              <SnackBarAlert message="Please fill out this field" />
             )}
           </FormControl>
         </div>
@@ -180,7 +168,7 @@ const Login = (props) => {
           </Alert>
         )}
         {/* Button Section */}
-        <div className="button-margin-container">
+        <div className="button-margin-container-login">
           <Button type="submit" variant="contained" color="primary">
             Login
           </Button>

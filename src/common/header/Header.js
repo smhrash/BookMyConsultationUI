@@ -13,6 +13,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import Modal from "react-modal";
 import TabContainer from "../tabContainer/TabContainer";
 import Login from "../../screens/login/Login";
+import Register from "../../screens/register/Register";
 import { logoutFetch } from "../../util/fetch";
 
 Modal.setAppElement("#root");
@@ -95,7 +96,7 @@ const Header = () => {
               <Login modalClose={handleModalClose}></Login>
             </TabContainer>
             <TabContainer value={activeTab} index={1}>
-              Register
+              <Register modalClose={handleModalClose}></Register>
             </TabContainer>
           </CardContent>
         </Paper>
