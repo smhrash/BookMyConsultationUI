@@ -42,7 +42,8 @@
   background-color: purple;
   color: white;
   font-size: x-large;
-  font-weight: 400;
-  padding: 10% 0;
+  font-weight: bolder;
+  padding: 10% 2%;
   height: 70%;
+  margin-left: 50px;
 }

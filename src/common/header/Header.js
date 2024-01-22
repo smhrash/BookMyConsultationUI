@@ -12,6 +12,8 @@ import Logo from "../../assets/logo.jpeg";
 import { AuthContext } from "../../contexts/AuthContext";
 import Modal from "react-modal";
 import TabContainer from "../tabContainer/TabContainer";
+import Login from "../../screens/login/Login";
+import { logoutFetch } from "../../util/fetch";
 
 Modal.setAppElement("#root");
 
@@ -27,12 +29,8 @@ const Header = () => {
     setModalOpen(true);
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("access-token");
-    sessionStorage.removeItem("emailId");
-    sessionStorage.removeItem("doctorId");
-    sessionStorage.removeItem("appointmentId");
-    //TODO: need to complete the logout section
+  const handleLogout = async () => {
+    await logoutFetch();
     dispatch({ type: "LOGOUT" });
   };
 
@@ -65,7 +63,7 @@ const Header = () => {
         <div className="header-buttons">
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             className="header-logout-button"
             onClick={handleLogout}
           >
@@ -94,7 +92,7 @@ const Header = () => {
               <Tab label="REGISTER" />
             </Tabs>
             <TabContainer value={activeTab} index={0}>
-              Login
+              <Login modalClose={handleModalClose}></Login>
             </TabContainer>
             <TabContainer value={activeTab} index={1}>
               Register
