@@ -3,12 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Controller from "./screens/Controller";
-import { AuthContextProvider } from "./contexts/AuthContext";
 
 ReactDOM.render(
-  <AuthContextProvider>
-    <Controller />
-  </AuthContextProvider>,
+  <Controller />,
+
   document.getElementById("root")
 );
 

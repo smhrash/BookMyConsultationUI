@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 import SnackBarAlert from "../../common/SnackBar/SnackBarAlert";
-import { RegisterFetch, loginFetch } from "../../util/fetch";
+import { registerFetch, loginFetch } from "../../util/fetch";
 import { Alert } from "@material-ui/lab";
 
 const Register = (props) => {
@@ -135,7 +135,7 @@ const Register = (props) => {
       !isPasswordBlank &&
       !isMobileNumberBlank
     ) {
-      const data = await RegisterFetch(
+      const data = await registerFetch(
         firstName,
         lastName,
         mobileNumber,

@@ -2,6 +2,7 @@ import Header from "../../common/header/Header";
 import React, { useState } from "react";
 import { Tab, Tabs } from "@material-ui/core";
 import TabContainer from "../../common/tabContainer/TabContainer";
+import DoctorList from "../../screens/doctorList/DoctorList";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -24,7 +25,7 @@ const Home = () => {
         <Tab label="Appointment"></Tab>
       </Tabs>
       <TabContainer value={activeTab} index={0}>
-        Doctors
+        <DoctorList />
       </TabContainer>
       <TabContainer value={activeTab} index={1}>
         Login to see Appointments

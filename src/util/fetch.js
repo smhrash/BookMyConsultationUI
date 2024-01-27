@@ -1,5 +1,8 @@
 const loginURL = "http://localhost:8080/auth/login";
 const logoutURL = "http://localhost:8080/auth/logout";
+const registerURL = "http://localhost:8080/users/register";
+const doctorAllSpecialityURL = "http://localhost:8080/doctors/speciality";
+const getAllDoctorsURL = "http://localhost:8080/doctors?speciality";
 
 /**
  * Performs a login fetch request.
@@ -55,14 +58,14 @@ export const logoutFetch = async () => {
   }
 };
 
-export const RegisterFetch = async (
+export const registerFetch = async (
   firstName,
   lastName,
   mobile,
   password,
   emailId
 ) => {
-  const response = await fetch("http://localhost:8080/users/register", {
+  const response = await fetch(registerURL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -82,6 +85,61 @@ export const RegisterFetch = async (
   if (response.status === 200) {
     return response.status;
   } else if (response.status === 409) {
+    return "error";
+  }
+};
+
+export const getAllDoctorSpecialityFetch = async () => {
+  const response = await fetch(doctorAllSpecialityURL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  }).catch(function (error) {
+    console.log(error);
+    throw new Error("Error while fetching doctor speciality");
+  });
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return "error";
+  }
+};
+
+export const getAllDoctorsFetch = async () => {
+  const response = await fetch(getAllDoctorsURL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  }).catch(function (error) {
+    console.log(error);
+    throw new Error("Error while fetching all doctors");
+  });
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return "error";
+  }
+};
+
+export const getAllDoctorsBySpecialityFetch = async (speciality) => {
+  const getAllDoctorsBySpecialityURL = getAllDoctorsURL + "=" + speciality;
+  const response = await fetch(getAllDoctorsBySpecialityURL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  }).catch(function (error) {
+    console.log(error);
+    throw new Error("Error while fetching all doctors by speciality");
+  });
+  if (response.status === 200) {
+    return response.json();
+  } else {
     return "error";
   }
 };
