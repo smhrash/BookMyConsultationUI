@@ -3,6 +3,7 @@ const logoutURL = "http://localhost:8080/auth/logout";
 const registerURL = "http://localhost:8080/users/register";
 const doctorAllSpecialityURL = "http://localhost:8080/doctors/speciality";
 const getAllDoctorsURL = "http://localhost:8080/doctors?speciality";
+const getDoctorTimeSlotsBaseURL = "http://localhost:8080/doctors/";
 
 /**
  * Performs a login fetch request.
@@ -136,6 +137,26 @@ export const getAllDoctorsBySpecialityFetch = async (speciality) => {
   }).catch(function (error) {
     console.log(error);
     throw new Error("Error while fetching all doctors by speciality");
+  });
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return "error";
+  }
+};
+
+export const getDoctorTimeSlotsFetch = async (doctorId, date) => {
+  const getDoctorTimeSlotsURL =
+    getDoctorTimeSlotsBaseURL + doctorId + "/timeSlots?date=" + date;
+  const response = await fetch(getDoctorTimeSlotsURL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  }).catch(function (error) {
+    console.log(error);
+    throw new Error("Error while fetching doctor time slots");
   });
   if (response.status === 200) {
     return response.json();
