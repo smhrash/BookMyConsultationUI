@@ -1,0 +1,36 @@
+.select-header {
+  margin-top: 15px;
+  display: grid;
+  align-self: flex-start;
+  justify-items: start;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-speciality {
+  text-align: left;
+  background-color: #dcdcdc;
+  font-size: 1.1em;
+}
+.doctor-card {
+  width: 40%;
+  text-align: left;
+  padding: 20px;
+  margin: 15px;
+  cursor: pointer;
+  align-items: center;
+}
+.doctor-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}

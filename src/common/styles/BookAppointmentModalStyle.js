@@ -1,0 +1,17 @@
+const BookAppointmentModalStyle = {
+  modal: {
+    width: "40%",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    height: "auto",
+    marginRight: "-50%",
+    padding: "5px",
+    transform: "translate(-50%, -50%)",
+    border: "0.1px solid #D3D3D3",
+    borderRadius: "5px",
+  },
+};
+
+export default BookAppointmentModalStyle;
