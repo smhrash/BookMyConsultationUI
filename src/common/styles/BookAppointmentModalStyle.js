@@ -1,5 +1,5 @@
 const BookAppointmentModalStyle = {
-  modal: {
+  content: {
     width: "40%",
     top: "50%",
     left: "50%",
@@ -7,7 +7,7 @@ const BookAppointmentModalStyle = {
     bottom: "auto",
     height: "auto",
     marginRight: "-50%",
-    padding: "5px",
+    padding: "0px",
     transform: "translate(-50%, -50%)",
     border: "0.1px solid #D3D3D3",
     borderRadius: "5px",

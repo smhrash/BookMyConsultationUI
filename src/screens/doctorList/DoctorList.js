@@ -30,6 +30,7 @@ const DoctorList = () => {
   const [doctor, setDoctor] = useState({});
 
   const [doctorDetailsModalOpen, setDoctorDetailsModalOpen] = useState(false);
+
   const [bookAppointmentState, setBookAppointmentState] = useState(false);
 
   const getAllDoctorSpeciality = async () => {
