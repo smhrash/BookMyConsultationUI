@@ -125,7 +125,7 @@ const Login = (props) => {
               }}
             ></Input>
             {emailPatternValidate === true && email.length > 0 && (
-              <FormHelperText style={{ color: "red" }}>
+              <FormHelperText style={{ color: "red", fontWeight: 200 }}>
                 Enter Valid Email
               </FormHelperText>
             )}

@@ -219,7 +219,7 @@ const Register = (props) => {
               }}
             />
             {emailPatternValidate === true && emailId.length > 0 && (
-              <FormHelperText style={{ color: "red" }}>
+              <FormHelperText style={{ color: "red", fontWeight: 200 }}>
                 Enter Valid Email
               </FormHelperText>
             )}
@@ -264,7 +264,7 @@ const Register = (props) => {
             />
             {mobileNumberPatternValidate === true &&
               mobileNumber.length > 0 && (
-                <FormHelperText style={{ color: "red" }}>
+                <FormHelperText style={{ color: "red", fontWeight: 200 }}>
                   Enter valid mobile number
                 </FormHelperText>
               )}

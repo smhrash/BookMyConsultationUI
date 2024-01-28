@@ -11,6 +11,7 @@ import {
   MenuItem,
   InputLabel,
   Button,
+  FormHelperText,
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -21,21 +22,31 @@ import DateFnsUtils from "@date-io/date-fns";
 import BookAppointmentModalStyle from "../../common/styles/BookAppointmentModalStyle";
 import LoginAlertBookingAppointmentStyle from "../../common/styles/LoginAlertBookingAppointmentStyle";
 import BookAppointmentStyle from "../../common/styles/BookAppointmentStyle";
-import bookAppointmentButton from "../../common/styles/ButtonStyles";
 
 import { getDoctorTimeSlotsFetch } from "../../util/fetch";
-import ButtonStyles from "../../common/styles/ButtonStyles";
 
 const BookAppointment = (props) => {
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  let doctorId = props.doctor.id;
   const date = new Date().toISOString().split("T")[0];
-  const [selectedDate, setSelectedDate] = React.useState(date);
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(date);
   const [doctorTimeSlots, setDoctorTimeSlots] = useState([]);
 
-  const [isSlotEmpty, setIsSlotEmpty] = React.useState(false);
-  const [selectedSlot, setSelectedSlot] = React.useState("");
+  const [medicalHistory, setMedicalHistory] = useState("");
+  const [symptoms, setSymptoms] = useState("");
+
+  const [isSlotEmpty, setIsSlotEmpty] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState("");
 
   const { userToken } = useContext(AuthContext);
+
+  const handleMedicalHistoryChange = (e) => {
+    setMedicalHistory(e.target.value);
+  };
+
+  const handleSymptomsChange = (e) => {
+    setSymptoms(e.target.value);
+  };
 
   const handleBookingModalClose = () => {
     setBookingModalOpen(false);
@@ -50,15 +61,16 @@ const BookAppointment = (props) => {
     setSelectedDate(date.toISOString().split("T")[0]);
   };
 
-  const getDoctorTimeSlots = async () => {
-    const data = await getDoctorTimeSlotsFetch(props.doctor.id, selectedDate);
+  const getDoctorTimeSlots = async (doctorId, selectedDate) => {
+    const data = await getDoctorTimeSlotsFetch(doctorId, selectedDate);
     if (data !== "error") {
       if (data.timeSlot.length > 0) {
         setIsSlotEmpty(false);
       } else {
         setIsSlotEmpty(true);
       }
-      setDoctorTimeSlots(data.timeSlot);
+
+      setDoctorTimeSlots([...data.timeSlot, "None"]);
     }
   };
 
@@ -90,12 +102,12 @@ const BookAppointment = (props) => {
       selectedDate !== null &&
       selectedDate !== undefined &&
       selectedDate !== "" &&
-      props.doctor.id !== null &&
-      props.doctor.id !== undefined
+      doctorId !== null &&
+      doctorId !== undefined
     ) {
-      getDoctorTimeSlots();
+      getDoctorTimeSlots(doctorId, selectedDate);
     }
-  }, [selectedDate, props.doctor.id]);
+  }, [selectedDate, doctorId]);
 
   return (
     <>
@@ -111,85 +123,96 @@ const BookAppointment = (props) => {
             Please Login to access book appointment
           </Alert>
         </div>
-      ) : null}
-      <Modal
-        isOpen={bookingModalOpen}
-        style={BookAppointmentModalStyle}
-        onRequestClose={handleBookingModalClose}
-      >
-        <Paper>
-          <div style={BookAppointmentStyle.card}>
-            <Typography style={BookAppointmentStyle.bookAppointmentHeader}>
-              Book an Appointment
-            </Typography>
-          </div>
-          <div>
-            <TextField
-              required
-              disabled
-              defaultValue={
-                props.doctor.firstName + " " + props.doctor.lastName
-              }
-              id="standard-required"
-              label="Doctor Name"
-              variant="filled"
-              style={BookAppointmentStyle.doctorName}
-            />
-          </div>
-          <div>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="Date picker inline"
-                value={selectedDate}
-                onChange={handleDateChange}
-                style={BookAppointmentStyle.datePickStyle}
+      ) : (
+        <Modal
+          isOpen={bookingModalOpen}
+          style={BookAppointmentModalStyle}
+          onRequestClose={handleBookingModalClose}
+        >
+          <Paper>
+            <div style={BookAppointmentStyle.card}>
+              <Typography style={BookAppointmentStyle.bookAppointmentHeader}>
+                Book an Appointment
+              </Typography>
+            </div>
+            <div>
+              <TextField
+                required
+                disabled
+                defaultValue={
+                  props.doctor.firstName + " " + props.doctor.lastName
+                }
+                id="standard-required"
+                label="Doctor Name"
+                variant="standard"
+                style={BookAppointmentStyle.doctorName}
               />
-            </MuiPickersUtilsProvider>
-          </div>
-          <div>
+            </div>
+            <div>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Date picker inline"
+                  value={selectedDate || date}
+                  onChange={handleDateChange}
+                  style={BookAppointmentStyle.datePickStyle}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
+            <div>
+              <FormControl>
+                <InputLabel style={BookAppointmentStyle.timeSlotStyle}>
+                  Timeslot
+                </InputLabel>
+                <Select
+                  label="TimeSlot"
+                  style={BookAppointmentStyle.timeSlotStyle}
+                  onChange={handleTimeSlotChange}
+                  value={selectedSlot}
+                >
+                  {doctorTimeSlots.map((timeSlot, index) => (
+                    <MenuItem value={timeSlot} key={index}>
+                      {timeSlot}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {selectedSlot === "None" || selectedSlot === "" ? (
+                  <FormHelperText style={BookAppointmentStyle.timeSlotAlert}>
+                    Select a time slot
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
+            </div>
             <FormControl>
-              <InputLabel style={BookAppointmentStyle.timeSlotStyle}>
-                Timeslot
-              </InputLabel>
-              <Select
-                label="TimeSlot"
-                style={BookAppointmentStyle.timeSlotStyle}
-                onChange={handleTimeSlotChange}
-              >
-                {doctorTimeSlots.map((timeSlot, index) => (
-                  <MenuItem value={timeSlot} key={index}>
-                    {timeSlot}
-                  </MenuItem>
-                ))}
-              </Select>
+              <TextField
+                label="Medical History"
+                multiline
+                minRows={4}
+                style={BookAppointmentStyle.medicalHistoryStyle}
+                value={medicalHistory}
+                onChange={handleMedicalHistoryChange}
+              ></TextField>
+              <TextField
+                label="Symptoms"
+                multiline
+                minRows={4}
+                style={BookAppointmentStyle.medicalHistoryStyle}
+                value={symptoms}
+                onChange={handleSymptomsChange}
+              ></TextField>
             </FormControl>
-          </div>
-          <FormControl>
-            <TextField
-              label="Medical History"
-              multiline
-              minRows={4}
-              style={BookAppointmentStyle.medicalHistoryStyle}
-            ></TextField>
-            <TextField
-              label="Symptoms"
-              multiline
-              minRows={4}
-              style={BookAppointmentStyle.medicalHistoryStyle}
-            ></TextField>
-          </FormControl>
-          <div>
-            <Button style={BookAppointmentStyle.appointmentButton}>
-              Book Appointment
-            </Button>
-          </div>
-        </Paper>
-      </Modal>
+            <div>
+              <Button style={BookAppointmentStyle.appointmentButton}>
+                Book Appointment
+              </Button>
+            </div>
+          </Paper>
+        </Modal>
+      )}
     </>
   );
 };

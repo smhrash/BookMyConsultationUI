@@ -20,15 +20,20 @@ const BookAppointmentStyle = {
     marginLeft: "10px",
   },
   datePickStyle: {
-    marginBottom: "20px",
+    marginBottom: "10px",
     marginLeft: "10px",
   },
   timeSlotStyle: {
-    marginBottom: "10px",
     width: "150px",
     marginLeft: "10px",
   },
+  timeSlotAlert: {
+    marginLeft: "10px",
+    color: "red",
+    fontWeight: "200",
+  },
   medicalHistoryStyle: {
+    marginTop: "30px",
     marginBottom: "10px",
     marginLeft: "10px",
     width: "200px",
