@@ -149,10 +149,11 @@ const Register = (props) => {
           dispatch({ type: "LOGIN", payload: loginData.accessToken });
           sessionStorage.setItem("access-token", loginData.accessToken);
           sessionStorage.setItem("emailId", loginData.emailAddress);
-          setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             window.location.href = "/";
             props.handleModalClose();
           }, 1000);
+          return () => clearTimeout(timeoutId);
         }
       }
     }

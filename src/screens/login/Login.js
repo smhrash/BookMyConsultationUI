@@ -87,10 +87,11 @@ const Login = (props) => {
 
         sessionStorage.setItem("access-token", data.accessToken);
         sessionStorage.setItem("emailId", data.emailAddress);
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           window.location.href = "/";
           props.handleModalClose();
         }, 1000);
+        return () => clearTimeout(timeoutId);
       } else if (data === "error") {
         setLoggedIn(false);
         setUnAuthorizedAlert(true);

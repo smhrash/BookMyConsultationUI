@@ -25,7 +25,11 @@ import BookAppointmentModalStyle from "../../common/styles/BookAppointmentModalS
 import LoginAlertBookingAppointmentStyle from "../../common/styles/LoginAlertBookingAppointmentStyle";
 import BookAppointmentStyle from "../../common/styles/BookAppointmentStyle";
 
-import { getDoctorTimeSlotsFetch } from "../../util/fetch";
+import {
+  getDoctorTimeSlotsFetch,
+  getUserDetailsFetch,
+  bookAppointmentFetch,
+} from "../../util/fetch";
 
 const BookAppointment = (props) => {
   let doctorId = props.doctor.id;
@@ -34,6 +38,8 @@ const BookAppointment = (props) => {
   const [selectedDate, setSelectedDate] = useState(date);
   const [doctorTimeSlots, setDoctorTimeSlots] = useState([]);
   const [userEmail, setUserEmail] = useState("");
+  const [userDetails, setUserDetails] = useState({});
+  const [registeredSuccessAlert, setRegisteredSuccessAlert] = useState(false);
 
   const [medicalHistory, setMedicalHistory] = useState("");
   const [symptoms, setSymptoms] = useState("");
@@ -54,6 +60,7 @@ const BookAppointment = (props) => {
   const handleBookingModalClose = () => {
     setBookingModalOpen(false);
     props.setBookAppointmentState(false);
+    setRegisteredSuccessAlert(false);
   };
 
   const handleAlertClose = () => {
@@ -64,7 +71,7 @@ const BookAppointment = (props) => {
     setSelectedDate(date.toISOString().split("T")[0]);
   };
 
-  const handleBookAppointment = (e) => {
+  const handleBookAppointment = async (e) => {
     e.preventDefault();
     if (
       selectedSlot === "None" ||
@@ -76,16 +83,23 @@ const BookAppointment = (props) => {
     } else {
       const data = {
         doctorId: doctorId,
-        doctorName: props.doctor.name,
+        doctorName: props.doctor.firstName + " " + props.doctor.lastName,
         userId: userEmail,
-        userEmailId: userEmail,
+        userEmailId: userDetails.emailId,
+        userName: userDetails.firstName + " " + userDetails.lastName,
         timeSlot: selectedSlot,
+        appointmentDate: selectedDate,
         medicalHistory: medicalHistory,
         symptoms: symptoms,
       };
-      console.log(data);
-      props.setBookAppointmentState(true);
-      setBookingModalOpen(false);
+
+      let confirmation = await bookAppointmentFetch(userToken, data);
+      if (confirmation !== "error") {
+        setRegisteredSuccessAlert(true);
+      } else {
+        alert("Either the slot is already booked or not available");
+        setRegisteredSuccessAlert(false);
+      }
     }
   };
 
@@ -122,6 +136,13 @@ const BookAppointment = (props) => {
     }
   };
 
+  const getUserData = async (userEmail, userToken) => {
+    const data = await getUserDetailsFetch(userEmail, userToken);
+    if (data !== "error") {
+      setUserDetails(data);
+    }
+  };
+
   useEffect(() => {
     if (
       userToken &&
@@ -136,6 +157,12 @@ const BookAppointment = (props) => {
   }, [userToken]);
 
   useEffect(() => {
+    if (userEmail !== null && userEmail !== undefined && userEmail !== "") {
+      getUserData(userEmail, userToken);
+    }
+  }, [userEmail, userToken]);
+
+  useEffect(() => {
     if (
       selectedDate !== null &&
       selectedDate !== undefined &&
@@ -146,6 +173,19 @@ const BookAppointment = (props) => {
       getDoctorTimeSlots(doctorId, selectedDate);
     }
   }, [selectedDate, doctorId]);
+
+  useEffect(() => {
+    if (
+      registeredSuccessAlert &&
+      registeredSuccessAlert !== null &&
+      registeredSuccessAlert !== undefined
+    ) {
+      const timeoutId = setTimeout(() => {
+        setRegisteredSuccessAlert(false);
+      }, 3000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [registeredSuccessAlert]);
 
   return (
     <>
@@ -243,6 +283,16 @@ const BookAppointment = (props) => {
                 onChange={handleSymptomsChange}
               ></TextField>
             </FormControl>
+            {registeredSuccessAlert && (
+              <Alert
+                variant="filled"
+                severity="success"
+                style={{ width: "40%", margin: "auto" }}
+                setTimeout
+              >
+                Registered Successfully
+              </Alert>
+            )}
             <div>
               <Button
                 style={BookAppointmentStyle.appointmentButton}
