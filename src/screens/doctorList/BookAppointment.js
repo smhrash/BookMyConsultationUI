@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Alert } from "@material-ui/lab";
 import Modal from "react-modal";
+import { jwtDecode } from "jwt-decode";
+
 import {
   Typography,
   Paper,
@@ -31,6 +33,7 @@ const BookAppointment = (props) => {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(date);
   const [doctorTimeSlots, setDoctorTimeSlots] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
 
   const [medicalHistory, setMedicalHistory] = useState("");
   const [symptoms, setSymptoms] = useState("");
@@ -61,6 +64,31 @@ const BookAppointment = (props) => {
     setSelectedDate(date.toISOString().split("T")[0]);
   };
 
+  const handleBookAppointment = (e) => {
+    e.preventDefault();
+    if (
+      selectedSlot === "None" ||
+      selectedSlot === "" ||
+      selectedSlot === null ||
+      selectedSlot === undefined
+    ) {
+      alert("Please select a slot");
+    } else {
+      const data = {
+        doctorId: doctorId,
+        doctorName: props.doctor.name,
+        userId: userEmail,
+        userEmailId: userEmail,
+        timeSlot: selectedSlot,
+        medicalHistory: medicalHistory,
+        symptoms: symptoms,
+      };
+      console.log(data);
+      props.setBookAppointmentState(true);
+      setBookingModalOpen(false);
+    }
+  };
+
   const getDoctorTimeSlots = async (doctorId, selectedDate) => {
     const data = await getDoctorTimeSlotsFetch(doctorId, selectedDate);
     if (data !== "error") {
@@ -85,6 +113,15 @@ const BookAppointment = (props) => {
     setSelectedSlot(e.target.value);
   };
 
+  const getJWTTokenDecoded = (userToken) => {
+    try {
+      const decodedToken = jwtDecode(userToken);
+      setUserEmail(decodedToken.aud);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (
       userToken &&
@@ -94,6 +131,7 @@ const BookAppointment = (props) => {
     ) {
       // Call handleBookingModalOpen inside useEffect to avoid too many renders
       handleBookingModalOpen();
+      getJWTTokenDecoded(userToken);
     }
   }, [userToken]);
 
@@ -206,7 +244,10 @@ const BookAppointment = (props) => {
               ></TextField>
             </FormControl>
             <div>
-              <Button style={BookAppointmentStyle.appointmentButton}>
+              <Button
+                style={BookAppointmentStyle.appointmentButton}
+                onClick={handleBookAppointment}
+              >
                 Book Appointment
               </Button>
             </div>
