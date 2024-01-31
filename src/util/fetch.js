@@ -6,6 +6,8 @@ const getAllDoctorsURL = "http://localhost:8080/doctors?speciality";
 const getDoctorTimeSlotsBaseURL = "http://localhost:8080/doctors/";
 const getUserDetailsURL = "http://localhost:8080/users/";
 const bookAppointmentURL = "http://localhost:8080/appointments";
+const getUserAppointmentsURL = "http://localhost:8080/users/";
+const postDoctorRatingsURL = "http://localhost:8080/ratings";
 
 /**
  * Performs a login fetch request.
@@ -201,6 +203,48 @@ export const bookAppointmentFetch = async (token, data) => {
     throw new Error("Error while booking appointment");
   });
   if (response.status === 201) {
+    const responseData = await response.text(); // Get the response as a string
+    return responseData;
+  } else {
+    return "error";
+  }
+};
+
+export const getUserAppointmentFetch = async (token, email) => {
+  const getUserAppointmentsFullURL =
+    getUserAppointmentsURL + email + "/appointments";
+  const response = await fetch(getUserAppointmentsFullURL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).catch(function (error) {
+    console.log(error);
+    throw new Error("Error while fetching user appointment");
+  });
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return "error";
+  }
+};
+
+export const postDoctorRatingFetch = async (token, postingData) => {
+  const response = await fetch(postDoctorRatingsURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(postingData),
+  }).catch(function (error) {
+    console.log(error);
+    throw new Error("Error while posting doctor rating");
+  });
+  if (response.status === 200) {
     const responseData = await response.text(); // Get the response as a string
     return responseData;
   } else {

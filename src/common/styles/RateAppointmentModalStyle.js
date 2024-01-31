@@ -1,6 +1,6 @@
-const BookAppointmentModalStyle = {
+const RateAppointmentModalStyle = {
   content: {
-    width: "40%",
+    width: "50%",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -15,4 +15,4 @@ const BookAppointmentModalStyle = {
   },
 };
 
-export default BookAppointmentModalStyle;
+export default RateAppointmentModalStyle;

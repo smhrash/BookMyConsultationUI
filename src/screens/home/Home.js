@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Tab, Tabs } from "@material-ui/core";
 import TabContainer from "../../common/tabContainer/TabContainer";
 import DoctorList from "../../screens/doctorList/DoctorList";
+import Appointment from "../../screens/appointment/Appointment";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -28,7 +29,7 @@ const Home = () => {
         <DoctorList />
       </TabContainer>
       <TabContainer value={activeTab} index={1}>
-        Login to see Appointments
+        <Appointment />
       </TabContainer>
     </div>
   );

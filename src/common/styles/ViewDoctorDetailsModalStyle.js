@@ -11,6 +11,7 @@ const ViewDoctorDetailsModalStyle = {
     transform: "translate(-50%, -50%)",
     border: "0.1px solid #D3D3D3",
     borderRadius: "5px",
+    overflow: "hidden",
   },
 };
 

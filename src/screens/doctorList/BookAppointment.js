@@ -89,7 +89,8 @@ const BookAppointment = (props) => {
         userName: userDetails.firstName + " " + userDetails.lastName,
         timeSlot: selectedSlot,
         appointmentDate: selectedDate,
-        medicalHistory: medicalHistory,
+        createdDate: new Date().toISOString().split("T")[0],
+        priorMedicalHistory: medicalHistory,
         symptoms: symptoms,
       };
 
@@ -182,10 +183,13 @@ const BookAppointment = (props) => {
     ) {
       const timeoutId = setTimeout(() => {
         setRegisteredSuccessAlert(false);
+        setBookingModalOpen(false);
+        props.setBookAppointmentState(false);
+        setRegisteredSuccessAlert(false);
       }, 3000);
       return () => clearTimeout(timeoutId);
     }
-  }, [registeredSuccessAlert]);
+  }, [registeredSuccessAlert, props]);
 
   return (
     <>
@@ -288,7 +292,6 @@ const BookAppointment = (props) => {
                 variant="filled"
                 severity="success"
                 style={{ width: "40%", margin: "auto" }}
-                setTimeout
               >
                 Registered Successfully
               </Alert>
