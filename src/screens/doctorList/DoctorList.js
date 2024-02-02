@@ -33,11 +33,19 @@ const DoctorList = () => {
 
   const [bookAppointmentState, setBookAppointmentState] = useState(false);
 
+  /**
+   * Fetches all doctor specialities and sets the data in the state.
+   * @returns {Promise<void>}
+   */
   const getAllDoctorSpeciality = async () => {
     const data = await getAllDoctorSpecialityFetch();
     setDoctorAllSpecialityData(data);
   };
 
+  /**
+   * Fetches all doctors and updates the doctor list data state.
+   * @returns {Promise<void>}
+   */
   const getAllDoctors = async () => {
     const data = await getAllDoctorsFetch();
     setDoctorListData(data);
@@ -52,6 +60,13 @@ const DoctorList = () => {
     console.log(bookAppointmentState);
   }, [bookAppointmentState]);
 
+  /**
+   * Handles the change event when the selected specialty is changed.
+   * Updates the selected specialty state and fetches the list of doctors based on the selected specialty.
+   *
+   * @param {Event} e - The change event object.
+   * @returns {Promise<void>} - A promise that resolves when the doctor list data is updated.
+   */
   const handleSelectedSpecalityChange = async (e) => {
     let speciality = e.target.value;
     setSelectedSpeciality(speciality);
@@ -60,10 +75,18 @@ const DoctorList = () => {
     setDoctorListData(data);
   };
 
+  /**
+   * Closes the doctor details modal.
+   */
   const handleModalClose = () => {
     setDoctorDetailsModalOpen(false);
   };
 
+  /**
+   * Handles the click event when the book appointment button is clicked.
+   * @param {Object} doctor - The doctor object.
+   * @returns {void}
+   */
   const handleBookAppointmentButtonClick = (doctor) => {
     setBookAppointmentState(true);
     setDoctor(doctor);

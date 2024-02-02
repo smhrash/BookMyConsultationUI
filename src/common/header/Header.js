@@ -26,19 +26,37 @@ const Header = () => {
   //the action to be sent to the reducder which will caseswitch
   const { userToken, dispatch } = useContext(AuthContext);
 
+  /**
+   * Handles the login action.
+   */
   const handleLogin = () => {
     setModalOpen(true);
   };
 
+  /**
+   * Handles the logout functionality.
+   * @async
+   * @function handleLogout
+   * @returns {Promise<void>}
+   */
   const handleLogout = async () => {
     await logoutFetch();
     dispatch({ type: "LOGOUT" });
   };
 
+  /**
+   * Handles the change of the active tab.
+   *
+   * @param {Event} event - The event object.
+   * @param {number} newValue - The new value of the active tab.
+   */
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
+  /**
+   * Closes the modal.
+   */
   const handleModalClose = () => {
     setModalOpen(false);
   };

@@ -63,6 +63,17 @@ export const logoutFetch = async () => {
   }
 };
 
+/**
+ * Registers a user by making a POST request to the registerURL.
+ *
+ * @param {string} firstName - The first name of the user.
+ * @param {string} lastName - The last name of the user.
+ * @param {string} mobile - The mobile number of the user.
+ * @param {string} password - The password of the user.
+ * @param {string} emailId - The email ID of the user.
+ * @returns {Promise<number|string>} - A promise that resolves to the response status code (200) if successful, or "error" (409) if there is a conflict.
+ * @throws {Error} - Throws an error if there is an error during registration.
+ */
 export const registerFetch = async (
   firstName,
   lastName,
@@ -94,6 +105,11 @@ export const registerFetch = async (
   }
 };
 
+/**
+ * Fetches all doctor specialities.
+ * @returns {Promise<any>} A promise that resolves to the fetched data or an error message.
+ * @throws {Error} If there is an error while fetching the doctor specialities.
+ */
 export const getAllDoctorSpecialityFetch = async () => {
   const response = await fetch(doctorAllSpecialityURL, {
     method: "GET",
@@ -112,6 +128,11 @@ export const getAllDoctorSpecialityFetch = async () => {
   }
 };
 
+/**
+ * Fetches all doctors from the server.
+ * @returns {Promise<any>} A promise that resolves to the response data if successful, or "error" if there was an error.
+ * @throws {Error} If there was an error while fetching all doctors.
+ */
 export const getAllDoctorsFetch = async () => {
   const response = await fetch(getAllDoctorsURL, {
     method: "GET",
@@ -130,6 +151,12 @@ export const getAllDoctorsFetch = async () => {
   }
 };
 
+/**
+ * Fetches all doctors by speciality.
+ * @param {string} speciality - The speciality of the doctors to fetch.
+ * @returns {Promise<any>} - A promise that resolves to the fetched data or an error message.
+ * @throws {Error} - If there is an error while fetching the data.
+ */
 export const getAllDoctorsBySpecialityFetch = async (speciality) => {
   const getAllDoctorsBySpecialityURL = getAllDoctorsURL + "=" + speciality;
   const response = await fetch(getAllDoctorsBySpecialityURL, {
@@ -149,6 +176,13 @@ export const getAllDoctorsBySpecialityFetch = async (speciality) => {
   }
 };
 
+/**
+ * Fetches the time slots for a specific doctor on a given date.
+ * @param {string} doctorId - The ID of the doctor.
+ * @param {string} date - The date for which to fetch the time slots.
+ * @returns {Promise<any>} - A promise that resolves to the fetched time slots or an error message.
+ * @throws {Error} - If there is an error while fetching the doctor time slots.
+ */
 export const getDoctorTimeSlotsFetch = async (doctorId, date) => {
   const getDoctorTimeSlotsURL =
     getDoctorTimeSlotsBaseURL + doctorId + "/timeSlots?date=" + date;
@@ -169,6 +203,13 @@ export const getDoctorTimeSlotsFetch = async (doctorId, date) => {
   }
 };
 
+/**
+ * Fetches user details from the server.
+ * @param {string} emailId - The email ID of the user.
+ * @param {string} token - The authentication token.
+ * @returns {Promise<Object|string>} - A promise that resolves to the user details object if successful, or an error message string if unsuccessful.
+ * @throws {Error} - Throws an error if there is an issue while fetching user details.
+ */
 export const getUserDetailsFetch = async (emailId, token) => {
   const getUserDetailsFullURL = getUserDetailsURL + emailId;
   const response = await fetch(getUserDetailsFullURL, {
@@ -189,6 +230,13 @@ export const getUserDetailsFetch = async (emailId, token) => {
   }
 };
 
+/**
+ * Function to book an appointment using fetch API.
+ * @param {string} token - The authentication token.
+ * @param {object} data - The data to be sent in the request body.
+ * @returns {Promise<string>} - A promise that resolves to the response data as a string if the status is 201, otherwise resolves to "error".
+ * @throws {Error} - Throws an error if there is an error while booking the appointment.
+ */
 export const bookAppointmentFetch = async (token, data) => {
   const response = await fetch(bookAppointmentURL, {
     method: "POST",
@@ -210,6 +258,13 @@ export const bookAppointmentFetch = async (token, data) => {
   }
 };
 
+/**
+ * Fetches user appointments using the provided token and email.
+ * @param {string} token - The user's authentication token.
+ * @param {string} email - The user's email address.
+ * @returns {Promise<any>} - A promise that resolves to the user's appointments or an error message.
+ * @throws {Error} - If there is an error while fetching the user's appointments.
+ */
 export const getUserAppointmentFetch = async (token, email) => {
   const getUserAppointmentsFullURL =
     getUserAppointmentsURL + email + "/appointments";
@@ -231,6 +286,13 @@ export const getUserAppointmentFetch = async (token, email) => {
   }
 };
 
+/**
+ * Posts doctor rating using the provided token and posting data.
+ * @param {string} token - The authentication token.
+ * @param {object} postingData - The data to be posted.
+ * @returns {Promise<string>} - A promise that resolves to the response data as a string, or "error" if there was an error.
+ * @throws {Error} - If there was an error while posting the doctor rating.
+ */
 export const postDoctorRatingFetch = async (token, postingData) => {
   const response = await fetch(postDoctorRatingsURL, {
     method: "POST",

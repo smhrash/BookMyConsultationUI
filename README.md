@@ -2,14 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-
 ## Project Setup steps
 
-1. Install Nodejs 10<
+1. Install Nodejs 10
 2. Checkout repo
-3. Traverse into code repo and execute `node i` to install packages
-4. To start the application `npm start`
- 
+3. delete the package-lock.json file
+4. delete the node_modules folder
+5. Traverse into code repo and execute `node i` to install packages
+6. To start the application `npm start`
+
 ## Available Scripts
 
 In the project directory, you can run:
