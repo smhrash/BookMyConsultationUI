@@ -8,6 +8,12 @@ import Appointment from "../../screens/appointment/Appointment";
 const Home = () => {
   const [activeTab, setActiveTab] = useState(0);
 
+  /**
+   * Handles the change of the tab.
+   *
+   * @param {Event} event - The event object.
+   * @param {number} newValue - The new value of the tab.
+   */
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };

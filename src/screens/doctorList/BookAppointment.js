@@ -295,7 +295,7 @@ const BookAppointment = (props) => {
                 severity="success"
                 style={{ width: "40%", margin: "auto" }}
               >
-                Registered Successfully
+                Appointment Booked Successfully
               </Alert>
             )}
             <div>

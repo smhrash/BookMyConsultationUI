@@ -1,6 +1,6 @@
 const ViewDoctorDetailsModalStyle = {
   content: {
-    width: "auto",
+    width: "25%",
     top: "50%",
     left: "50%",
     right: "auto",

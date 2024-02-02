@@ -61,7 +61,7 @@ const Register = (props) => {
   };
 
   /**
-   * Handles the change event for the password input field.
+   * Handles the change event of the password input field.
    * @param {Object} e - The event object.
    */
   const handlePasswordChange = (e) => {
@@ -109,6 +109,12 @@ const Register = (props) => {
     }
   };
 
+  /**
+   * Handles the form submission for registration.
+   *
+   * @param {Event} e - The form submission event.
+   * @returns {void}
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isFirstNameBlank = firstName.length === 0;
@@ -155,6 +161,8 @@ const Register = (props) => {
           }, 1000);
           return () => clearTimeout(timeoutId);
         }
+      } else {
+        setRegisterSuccess(false);
       }
     }
   };
@@ -274,9 +282,13 @@ const Register = (props) => {
             )}
           </FormControl>
         </div>
-        {registerSuccess && (
+        {registerSuccess ? (
           <Alert variant="filled" severity="success">
             Registration Successful
+          </Alert>
+        ) : (
+          <Alert variant="filled" severity="error">
+            Registration Failed
           </Alert>
         )}
         {/* Button Section */}
