@@ -60,7 +60,7 @@ const RateAppointment = (props) => {
       postDoctorRating();
       setTimeout(() => {
         handleModalClose();
-      }, 2000);
+      }, 3000);
 
       setRatingSelectionError(false);
     } else {
@@ -114,7 +114,11 @@ const RateAppointment = (props) => {
         Rate Appointment
       </Button>
       {ratingSuccess && (
-        <Alert variant="filled" severity="success">
+        <Alert
+          variant="filled"
+          severity="success"
+          style={RateAppointmentStyle.rateAppointmentAlert}
+        >
           Ratings Submitted
         </Alert>
       )}

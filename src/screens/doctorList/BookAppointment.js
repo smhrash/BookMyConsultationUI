@@ -46,6 +46,7 @@ const BookAppointment = (props) => {
 
   const [isSlotEmpty, setIsSlotEmpty] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState("");
+  const [selectedSlotError, setSelectedSlotError] = useState(false);
 
   const { userToken } = useContext(AuthContext);
 
@@ -79,7 +80,7 @@ const BookAppointment = (props) => {
       selectedSlot === null ||
       selectedSlot === undefined
     ) {
-      alert("Please select a slot");
+      setSelectedSlotError(true);
     } else {
       const data = {
         doctorId: doctorId,
@@ -126,6 +127,7 @@ const BookAppointment = (props) => {
       alert("No Slot Available");
     }
     setSelectedSlot(e.target.value);
+    setSelectedSlotError(false);
   };
 
   const getJWTTokenDecoded = (userToken) => {
@@ -262,11 +264,11 @@ const BookAppointment = (props) => {
                     </MenuItem>
                   ))}
                 </Select>
-                {selectedSlot === "None" || selectedSlot === "" ? (
+                {selectedSlotError && (
                   <FormHelperText style={BookAppointmentStyle.timeSlotAlert}>
                     Select a time slot
                   </FormHelperText>
-                ) : null}
+                )}
               </FormControl>
             </div>
             <FormControl>

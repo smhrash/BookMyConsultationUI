@@ -23,6 +23,15 @@ const RateAppointmentStyle = {
     marginLeft: "10px",
     marginBottom: "20px",
   },
+
+  rateAppointmentAlert: {
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    margin: "auto",
+    marginBottom: "20px",
+  },
 };
 
 export default RateAppointmentStyle;
