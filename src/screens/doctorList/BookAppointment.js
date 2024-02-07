@@ -20,7 +20,6 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-
 import BookAppointmentModalStyle from "../../common/styles/BookAppointmentModalStyle";
 import LoginAlertBookingAppointmentStyle from "../../common/styles/LoginAlertBookingAppointmentStyle";
 import BookAppointmentStyle from "../../common/styles/BookAppointmentStyle";
@@ -50,18 +49,10 @@ const BookAppointment = (props) => {
 
   const { userToken } = useContext(AuthContext);
 
-  /**
-   * Handles the change event for the medical history input field.
-   * @param {Event} e - The change event object.
-   */
   const handleMedicalHistoryChange = (e) => {
     setMedicalHistory(e.target.value);
   };
 
-  /**
-   * Handles the change event for the symptoms input field.
-   * @param {Object} e - The event object.
-   */
   const handleSymptomsChange = (e) => {
     setSymptoms(e.target.value);
   };
@@ -82,21 +73,10 @@ const BookAppointment = (props) => {
     props.setBookAppointmentState(false);
   };
 
-  /**
-   * Handles the change of date.
-   * @param {Date} date - The selected date.
-   * @returns {void}
-   */
   const handleDateChange = (date) => {
     setSelectedDate(date.toISOString().split("T")[0]);
   };
 
-  /**
-   * Handles the booking of an appointment.
-   *
-   * @param {Event} e - The event object.
-   * @returns {Promise<void>} - A promise that resolves when the appointment is booked successfully.
-   */
   const handleBookAppointment = async (e) => {
     e.preventDefault();
     if (
@@ -120,8 +100,8 @@ const BookAppointment = (props) => {
         symptoms: symptoms,
       };
 
-      let confirmation = await bookAppointmentFetch(userToken, data);
-      if (confirmation !== "error") {
+      let result = await bookAppointmentFetch(userToken, data);
+      if (result !== "error") {
         setRegisteredSuccessAlert(true);
       } else {
         alert("Either the slot is already booked or not available");
@@ -130,12 +110,6 @@ const BookAppointment = (props) => {
     }
   };
 
-  /**
-   * Retrieves the time slots for a specific doctor on a selected date.
-   * @param {string} doctorId - The ID of the doctor.
-   * @param {string} selectedDate - The selected date.
-   * @returns {Promise<void>} - A promise that resolves when the time slots are retrieved.
-   */
   const getDoctorTimeSlots = async (doctorId, selectedDate) => {
     const data = await getDoctorTimeSlotsFetch(doctorId, selectedDate);
     if (data !== "error") {
@@ -156,10 +130,6 @@ const BookAppointment = (props) => {
     setBookingModalOpen(true);
   };
 
-  /**
-   * Handles the change event of the time slot selection.
-   * @param {Event} e - The event object.
-   */
   const handleTimeSlotChange = (e) => {
     if (isSlotEmpty) {
       alert("No Slot Available");
@@ -168,10 +138,6 @@ const BookAppointment = (props) => {
     setSelectedSlotError(false);
   };
 
-  /**
-   * Decodes a JWT token and sets the user email.
-   * @param {string} userToken - The JWT token to decode.
-   */
   const getJWTTokenDecoded = (userToken) => {
     try {
       const decodedToken = jwtDecode(userToken);
@@ -181,12 +147,6 @@ const BookAppointment = (props) => {
     }
   };
 
-  /**
-   * Fetches user data using the provided email and token.
-   * @param {string} userEmail - The email of the user.
-   * @param {string} userToken - The token of the user.
-   * @returns {Promise<void>} - A promise that resolves when the user data is fetched successfully.
-   */
   const getUserData = async (userEmail, userToken) => {
     const data = await getUserDetailsFetch(userEmail, userToken);
     if (data !== "error") {

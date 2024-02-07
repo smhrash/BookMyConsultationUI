@@ -3,13 +3,13 @@ const ButtonStyles = {
     width: "40%",
     margin: "10px",
     color: "white",
-    backgroundColor: "#1565c0",
+    backgroundColor: "rgb(63,80,181)",
   },
   viewDoctorDetailsButton: {
     width: "40%",
     margin: "10px",
     color: "white",
-    backgroundColor: "green",
+    backgroundColor: "rgb(0,128,1)",
   },
 };
 

@@ -5,14 +5,29 @@ import {
   InputLabel,
   Button,
   FormHelperText,
+  makeStyles,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-
-import "./Login.css";
 import { AuthContext } from "../../contexts/AuthContext";
 import { loginFetch } from "../../util/fetch";
+import FieldValidationSnackbar from "../../common/fieldValidationSnackbar/FieldValidationSnackbar";
 
-import SnackBarAlert from "../../common/SnackBar/SnackBarAlert";
+// makeStyles hook to define styles
+const useStyles = makeStyles((theme) => ({
+  marginContainerLogin: {
+    marginBottom: 20,
+  },
+  loginContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 2,
+  },
+  buttonMarginContainerLogin: {
+    marginTop: 20,
+  },
+}));
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -28,27 +43,15 @@ const Login = (props) => {
   let flag = false;
 
   const [emailPatternValidate, setEmailPatternValidate] = useState(false);
-  /**
-   * Handles the change event for the email input field.
-   * @param {Object} e - The event object.
-   */
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  /**
-   * Handles the change event of the password input field.
-   * @param {Object} e - The event object.
-   */
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-  /**
-   * Checks if the given email matches the specified email pattern.
-   * @param {string} email - The email to be checked.
-   * @returns {boolean} - Returns true if the email matches the pattern, false otherwise.
-   */
   const checkEmailPattern = (email) => {
     const emailPattern =
       /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\\.,;:\s@"]+)$/i;
@@ -61,54 +64,52 @@ const Login = (props) => {
     }
   };
 
-  /**
-   * Handles the form submission for login.
-   *
-   * @param {Event} e - The form submission event.
-   * @returns {Promise<void>} - A promise that resolves when the login process is complete.
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const isEmailBlank = email.length === 0;
     setEmailBlank(isEmailBlank);
-
+  
     const isPasswordBlank = password.length === 0;
     setPasswordBlank(isPasswordBlank);
-
+  
     flag = checkEmailPattern(email);
-
-    //call the API only if emailPatternValidate is true && emailBlank & passwordBlank are false
+  
+    // Reset previous alerts
+    setLoggedIn(false);
+    setUnAuthorizedAlert(false);
+  
     if (flag && !isEmailBlank && !isPasswordBlank) {
       const data = await loginFetch(email, password);
       if (data.accessToken) {
+        // Successful login
         setLoggedIn(true);
         dispatch({ type: "LOGIN", payload: data.accessToken });
-
         sessionStorage.setItem("access-token", data.accessToken);
-        sessionStorage.setItem("emailId", data.emailAddress);
-        const timeoutId = setTimeout(() => {
+        sessionStorage.setItem("emailId", email); // Assuming email is returned or using input email
+        setTimeout(() => {
           window.location.href = "/";
           props.handleModalClose();
         }, 1000);
-        return () => clearTimeout(timeoutId);
-      } else if (data === "error") {
+      } else {
+        // Here, check for specific error types if your API returns them
         setLoggedIn(false);
-        setUnAuthorizedAlert(true);
+        setUnAuthorizedAlert(true); // Consider using a more descriptive state or message based on the error
       }
     }
   };
+  
+  const classes = useStyles();
 
   return (
     <div>
       <form
         autoComplete="off"
         noValidate
-        className="login-container"
+        className={classes.loginContainer}
         onSubmit={handleSubmit}
       >
         {/* Email Section */}
-        <div className="margin-container-login">
+        <div className={classes.marginContainerLogin}>
           <FormControl variant="standard" required>
             <InputLabel htmlFor="email" shrink={false}>
               Email
@@ -131,13 +132,13 @@ const Login = (props) => {
               </FormHelperText>
             )}
             {email.length === 0 && emailBlank && (
-              <SnackBarAlert message="Please fill out this field" />
+              <FieldValidationSnackbar message="Please fill out this field" />
             )}
           </FormControl>
         </div>
 
         {/* Password Section */}
-        <div className="margin-container-login">
+        <div className={classes.marginContainerLogin}>
           <FormControl variant="standard" required>
             <InputLabel htmlFor="password" shrink={false}>
               Password
@@ -154,7 +155,7 @@ const Login = (props) => {
               style={{ width: "100%", marginTop: "50px" }}
             ></Input>
             {password.length === 0 && passwordBlank && (
-              <SnackBarAlert message="Please fill out this field" />
+              <FieldValidationSnackbar message="Please fill out this field" />
             )}
           </FormControl>
         </div>
@@ -169,7 +170,7 @@ const Login = (props) => {
           </Alert>
         )}
         {/* Button Section */}
-        <div className="button-margin-container-login">
+        <div className={classes.buttonMarginContainerLogin}>
           <Button type="submit" variant="contained" color="primary">
             Login
           </Button>

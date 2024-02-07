@@ -44,7 +44,7 @@ const BookAppointmentStyle = {
     marginTop: "30px",
     marginBottom: "20px",
     color: "white",
-    backgroundColor: "#1976D2",
+    backgroundColor: "rgb(63,80,181)",
   },
 };
 

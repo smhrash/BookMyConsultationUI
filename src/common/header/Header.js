@@ -1,5 +1,4 @@
-import "./Header.css";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from 'react';
 import {
   Typography,
   Button,
@@ -7,115 +6,103 @@ import {
   Tab,
   Paper,
   CardContent,
-} from "@material-ui/core";
-import Logo from "../../assets/logo.jpeg";
-import { AuthContext } from "../../contexts/AuthContext";
-import Modal from "react-modal";
-import TabContainer from "../tabContainer/TabContainer";
-import Login from "../../screens/login/Login";
-import Register from "../../screens/register/Register";
-import { logoutFetch } from "../../util/fetch";
+  makeStyles,
+} from '@material-ui/core';
+import Modal from 'react-modal';
+import Logo from '../../assets/logo.jpeg';
+import { AuthContext } from '../../contexts/AuthContext';
+import Login from '../../screens/login/Login';
+import Register from '../../screens/register/Register';
+import { logoutFetch } from '../../util/fetch';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
+
+const useStyles = makeStyles((theme) => ({
+  header: {
+    backgroundColor: 'purple',
+    height: '70px',
+    padding: '11px',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  logo: {
+    backgroundColor: '#ff7f7f',
+    height: '35px',
+    marginRight: theme.spacing(1),
+  },
+  titleText: {
+    color: 'white',
+    textAlign: 'left',
+    paddingLeft: theme.spacing(1),
+    flexGrow: 1,
+  },
+  buttons: {
+    marginLeft: 'auto',
+  },
+  modalContainer: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    border: '1px solid #d3d3d3',
+    padding: '0px',
+  },
+  paperContainer: {
+    borderRadius: 5,
+    padding: theme.spacing(0),
+    border: '.1px solid #d3d3d3',
+    
+  },
+  modalTitle: {
+    backgroundColor: 'purple',
+    color: 'white',
+    fontSize: 'x-large',
+    padding: theme.spacing(2, 1),
+  },
+}));
 
 const Header = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const classes = useStyles();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-
-  //used to get the userToken and if any dispatch
-  //the action to be sent to the reducder which will caseswitch
   const { userToken, dispatch } = useContext(AuthContext);
 
-  /**
-   * Handles the login action.
-   */
-  const handleLogin = () => {
-    setModalOpen(true);
-  };
-
-  /**
-   * Handles the logout functionality.
-   * @async
-   * @function handleLogout
-   * @returns {Promise<void>}
-   */
+  const handleLogin = () => setIsModalOpen(true);
   const handleLogout = async () => {
     await logoutFetch();
-    dispatch({ type: "LOGOUT" });
+    dispatch({ type: 'LOGOUT' });
   };
-
-  /**
-   * Handles the change of the active tab.
-   *
-   * @param {Event} event - The event object.
-   * @param {number} newValue - The new value of the active tab.
-   */
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-  };
-
-  /**
-   * Closes the modal.
-   */
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
+  const handleTabChange = (event, newValue) => setActiveTab(newValue);
+  const handleModalClose = () => setIsModalOpen(false);
 
   return (
-    <header className="header-container">
-      <img className="header-logo" src={Logo} alt="Logo" />
-      <Typography variant="h6" className="header-title-text">
+    <header className={classes.header}>
+      <img src={Logo} alt="Logo" className={classes.logo} />
+      <Typography variant="h6" className={classes.titleText}>
         Doctor Finder
       </Typography>
-      {!userToken || modalOpen ? (
-        <div className="header-buttons">
-          <Button
-            variant="contained"
-            color="primary"
-            className="header-login-button"
-            onClick={handleLogin}
-          >
+      <div className={classes.buttons}>
+        {!userToken || isModalOpen ? (
+          <Button variant="contained" color="primary" onClick={handleLogin}>
             Login
           </Button>
-        </div>
-      ) : (
-        <div className="header-buttons">
-          <Button
-            variant="contained"
-            color="secondary"
-            className="header-logout-button"
-            onClick={handleLogout}
-          >
+        ) : (
+          <Button variant="contained" color="secondary" onClick={handleLogout}>
             Logout
           </Button>
-        </div>
-      )}
-      <Modal
-        isOpen={modalOpen}
-        onRequestClose={handleModalClose}
-        className="modal-container"
-      >
-        <Paper className="paper-container">
-          <Typography variant="h6" className="modal-title">
+        )}
+      </div>
+      <Modal isOpen={isModalOpen} onRequestClose={handleModalClose} className={classes.modalContainer}>
+        <Paper className={classes.paperContainer}>
+          <Typography variant="h6" className={classes.modalTitle}>
             Authentication
           </Typography>
           <CardContent>
-            <Tabs
-              value={activeTab}
-              onChange={handleTabChange}
-              indicatorColor="secondary"
-              textColor="primary"
-              centered
-            >
+            <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="secondary" textColor="primary" centered>
               <Tab label="LOGIN" />
               <Tab label="REGISTER" />
             </Tabs>
-            <TabContainer value={activeTab} index={0}>
-              <Login modalClose={handleModalClose}></Login>
-            </TabContainer>
-            <TabContainer value={activeTab} index={1}>
-              <Register modalClose={handleModalClose}></Register>
-            </TabContainer>
+            {activeTab === 0 ? <Login modalClose={handleModalClose} /> : <Register modalClose={handleModalClose} />}
           </CardContent>
         </Paper>
       </Modal>

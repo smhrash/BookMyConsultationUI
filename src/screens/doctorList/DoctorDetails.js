@@ -1,7 +1,7 @@
 import React from "react";
 import { Paper, Typography, CardContent } from "@material-ui/core";
 import ViewDoctorDetailsStyle from "../../common/styles/ViewDoctorDetailsStyle";
-import RatingStars from "../../common/RatingStars/RatingStars";
+import RatingStars from "../../common/ratings/Ratings";
 
 const DoctorDetails = (props) => {
   return (
@@ -11,7 +11,6 @@ const DoctorDetails = (props) => {
           Doctor Details
         </Typography>
       </div>
-
       <div>
         <CardContent>
           <Typography style={ViewDoctorDetailsStyle.doctorName}>

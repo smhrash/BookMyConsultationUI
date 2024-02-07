@@ -30,11 +30,6 @@ const RateAppointment = (props) => {
     setRatingSelectionError(false);
   };
 
-  /**
-   * Handles the change in rating value.
-   * @param {Event} event - The event object.
-   * @param {number} newValue - The new rating value.
-   */
   const handleRatingChange = (event, newValue) => {
     setUserSetRating(newValue);
     if (newValue !== 0 && newValue !== null) {
@@ -44,18 +39,10 @@ const RateAppointment = (props) => {
     }
   };
 
-  /**
-   * Handles the change event for the comments input field.
-   * @param {Event} event - The change event object.
-   */
   const handleCommentsChange = (event) => {
     setComments(event.target.value);
   };
 
-  /**
-   * Posts the doctor rating to the server.
-   * @returns {Promise<void>} A promise that resolves when the rating is successfully posted.
-   */
   const postDoctorRating = async () => {
     let postingData = {
       doctorId: props.ratingDetails.doctorID,
@@ -71,17 +58,12 @@ const RateAppointment = (props) => {
     }
   };
 
-  /**
-   * Handles the click event for the "Rate Appointment" button.
-   * If the user has set a rating, it posts the doctor's rating and closes the modal after 3 seconds.
-   * If the user has not set a rating, it sets the ratingSelectionError state to true.
-   */
   const handleRateAppointmentButtonClick = () => {
     if (userSetRating !== 0 && userSetRating !== null) {
       postDoctorRating();
       setTimeout(() => {
         handleModalClose();
-      }, 3000);
+      }, 2000);
 
       setRatingSelectionError(false);
     } else {

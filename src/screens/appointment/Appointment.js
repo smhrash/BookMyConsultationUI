@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Paper, Typography, Button } from "@material-ui/core";
 import { jwtDecode } from "jwt-decode";
-
 import { AuthContext } from "../../contexts/AuthContext";
 import { getUserAppointmentFetch } from "../../util/fetch";
 import AppointmentStyle from "../../common/styles/AppointmentStyle";
@@ -15,11 +14,6 @@ const Appointment = () => {
   const [ratingDetails, setRatingDetails] = useState({});
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
 
-  /**
-   * Decodes a JWT token and sets the user email.
-   * @param {string} userToken - The JWT token to be decoded.
-   * @returns {void}
-   */
   const getJWTTokenDecoded = (userToken) => {
     try {
       const decodedToken = jwtDecode(userToken);
@@ -29,12 +23,6 @@ const Appointment = () => {
     }
   };
 
-  /**
-   * Retrieves the user's appointment data using the provided user token and email.
-   * @param {string} userToken - The user's authentication token.
-   * @param {string} userEmail - The user's email address.
-   * @returns {Promise<void>} - A promise that resolves when the appointment data is retrieved.
-   */
   const getUserAppointment = async (userToken, userEmail) => {
     const data = await getUserAppointmentFetch(userToken, userEmail);
     if (data.length === 0) {
@@ -45,13 +33,6 @@ const Appointment = () => {
     setUserAppointmentData(data);
   };
 
-  /**
-   * Handles the click event for rating an appointment.
-   *
-   * @param {string} appointmentId - The ID of the appointment.
-   * @param {string} doctorId - The ID of the doctor.
-   * @returns {void}
-   */
   const handleRateAppointmentButtonClick = (appointmentId, doctorId) => {
     setRatingDetails({
       appointmentId: appointmentId,

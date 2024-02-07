@@ -6,20 +6,16 @@ import {
   Paper,
   Button,
 } from "@material-ui/core";
-
 import "./Doctor.css";
 import Modal from "react-modal";
-
 import {
   getAllDoctorSpecialityFetch,
   getAllDoctorsFetch,
   getAllDoctorsBySpecialityFetch,
 } from "../../util/fetch";
-
-import RatingStars from "../../common/RatingStars/RatingStars";
+import RatingStars from "../../common/ratings/Ratings";
 import DoctorDetails from "./DoctorDetails";
 import BookAppointment from "./BookAppointment";
-
 import ViewDoctorDetailsModalStyle from "../../common/styles/ViewDoctorDetailsModalStyle";
 import ButtonStyles from "../../common/styles/ButtonStyles";
 
@@ -33,19 +29,11 @@ const DoctorList = () => {
 
   const [bookAppointmentState, setBookAppointmentState] = useState(false);
 
-  /**
-   * Fetches all doctor specialities and sets the data in the state.
-   * @returns {Promise<void>}
-   */
   const getAllDoctorSpeciality = async () => {
     const data = await getAllDoctorSpecialityFetch();
     setDoctorAllSpecialityData(data);
   };
 
-  /**
-   * Fetches all doctors and updates the doctor list data state.
-   * @returns {Promise<void>}
-   */
   const getAllDoctors = async () => {
     const data = await getAllDoctorsFetch();
     setDoctorListData(data);
@@ -60,13 +48,6 @@ const DoctorList = () => {
     console.log(bookAppointmentState);
   }, [bookAppointmentState]);
 
-  /**
-   * Handles the change event when the selected specialty is changed.
-   * Updates the selected specialty state and fetches the list of doctors based on the selected specialty.
-   *
-   * @param {Event} e - The change event object.
-   * @returns {Promise<void>} - A promise that resolves when the doctor list data is updated.
-   */
   const handleSelectedSpecalityChange = async (e) => {
     let speciality = e.target.value;
     setSelectedSpeciality(speciality);
@@ -82,11 +63,6 @@ const DoctorList = () => {
     setDoctorDetailsModalOpen(false);
   };
 
-  /**
-   * Handles the click event when the book appointment button is clicked.
-   * @param {Object} doctor - The doctor object.
-   * @returns {void}
-   */
   const handleBookAppointmentButtonClick = (doctor) => {
     setBookAppointmentState(true);
     setDoctor(doctor);

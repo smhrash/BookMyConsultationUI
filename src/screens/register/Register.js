@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import "./Register.css";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
   Button,
@@ -7,11 +6,28 @@ import {
   Input,
   InputLabel,
   FormHelperText,
+  makeStyles,
 } from "@material-ui/core";
-
-import SnackBarAlert from "../../common/SnackBar/SnackBarAlert";
+import FieldValidationSnackbar from "../../common/fieldValidationSnackbar/FieldValidationSnackbar";
 import { registerFetch, loginFetch } from "../../util/fetch";
 import { Alert } from "@material-ui/lab";
+
+// makeStyles hook to define styles
+const useStyles = makeStyles((theme) => ({
+  marginContainerRegister: {
+    marginBottom: 20,
+  },
+  registerContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  buttonMarginContainerRegister: {
+    marginTop: 10,
+  },
+}));
 
 const Register = (props) => {
   const [firstName, setFirstName] = useState("");
@@ -29,6 +45,7 @@ const Register = (props) => {
   const [emailPatternValidate, setEmailPatternValidate] = useState(false);
   const [mobileNumberPatternValidate, setMobileNumberPatternValidate] =
     useState(false);
+  const [attemptedRegister, setAttemptedRegister] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
   const { dispatch } = useContext(AuthContext);
@@ -36,51 +53,26 @@ const Register = (props) => {
   let emailFlag = false;
   let mobileNumberFlag = false;
 
-  /**
-   * Handles the change event for the first name input field.
-   * @param {Object} e - The event object.
-   */
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
   };
 
-  /**
-   * Handles the change event for the last name input field.
-   * @param {Object} e - The event object.
-   */
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
   };
 
-  /**
-   * Handles the change event for the email input field.
-   * @param {Object} e - The event object.
-   */
   const handleEmailChange = (e) => {
     setEmailId(e.target.value);
   };
 
-  /**
-   * Handles the change event of the password input field.
-   * @param {Object} e - The event object.
-   */
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-  /**
-   * Handles the change event for the mobile number input field.
-   * @param {Object} e - The event object.
-   */
   const handleMobileNumberChange = (e) => {
     setMobileNumber(e.target.value);
   };
 
-  /**
-   * Checks if the given email matches the specified email pattern.
-   * @param {string} email - The email to be checked.
-   * @returns {boolean} - Returns true if the email matches the pattern, false otherwise.
-   */
   const checkEmailPattern = (email) => {
     const emailPattern =
       /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\\.,;:\s@"]+)$/i;
@@ -93,11 +85,6 @@ const Register = (props) => {
     }
   };
 
-  /**
-   * Checks if the given mobile number matches the specified pattern.
-   * @param {string} mobileNumber - The mobile number to be validated.
-   * @returns {boolean} - Returns true if the mobile number matches the pattern, otherwise false.
-   */
   const checkMobileNumberPattern = (mobileNumber) => {
     const mobileNumberPattern = /^\d{10}$/;
     if (mobileNumberPattern.test(mobileNumber) === false) {
@@ -109,14 +96,11 @@ const Register = (props) => {
     }
   };
 
-  /**
-   * Handles the form submission for registration.
-   *
-   * @param {Event} e - The form submission event.
-   * @returns {void}
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAttemptedRegister(true);
+    // Reset the registerSuccess state to null on each submit
+    setRegisterSuccess(null);
     const isFirstNameBlank = firstName.length === 0;
     const isLastNameBlank = lastName.length === 0;
     const isEmailIdBlank = emailId.length === 0;
@@ -166,17 +150,18 @@ const Register = (props) => {
       }
     }
   };
+  const classes = useStyles();
 
   return (
     <div>
       <form
         autoComplete="off"
         noValidate
-        className="register-container"
+        className={classes.registerContainer}
         onSubmit={handleSubmit}
       >
         {/* First Name Section */}
-        <div className="margin-container-register">
+        <div className={classes.marginContainerRegister}>
           <FormControl variant="standard" required>
             <InputLabel htmlFor="firstName">First Name</InputLabel>
             <Input
@@ -189,13 +174,13 @@ const Register = (props) => {
               }}
             />
             {firstName.length === 0 && firstNameBlank && (
-              <SnackBarAlert message="Please fill out this field" />
+              <FieldValidationSnackbar message="Please fill out this field" />
             )}
           </FormControl>
         </div>
 
         {/* Last Name Section */}
-        <div className="margin-container-register">
+        <div className={classes.marginContainerRegister}>
           <FormControl variant="standard" required>
             <InputLabel htmlFor="lastName">Last Name</InputLabel>
             <Input
@@ -208,13 +193,13 @@ const Register = (props) => {
               }}
             />
             {lastName.length === 0 && lastNameBlank && (
-              <SnackBarAlert message="Please fill out this field" />
+              <FieldValidationSnackbar message="Please fill out this field" />
             )}
           </FormControl>
         </div>
 
         {/* Email Id Section */}
-        <div className="margin-container-register">
+        <div className={classes.marginContainerRegister}>
           <FormControl variant="standard" required>
             <InputLabel htmlFor="email">Email Id</InputLabel>
             <Input
@@ -233,13 +218,13 @@ const Register = (props) => {
               </FormHelperText>
             )}
             {emailId.length === 0 && emailIdBlank && (
-              <SnackBarAlert message="Please fill out this field" />
+              <FieldValidationSnackbar message="Please fill out this field" />
             )}
           </FormControl>
         </div>
 
         {/* Password Section */}
-        <div className="margin-container-register">
+        <div className={classes.marginContainerRegister}>
           <FormControl variant="standard" required>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Input
@@ -252,13 +237,13 @@ const Register = (props) => {
               onChange={handlePasswordChange}
             />
             {password.length === 0 && passwordBlank && (
-              <SnackBarAlert message="Please fill out this field" />
+              <FieldValidationSnackbar message="Please fill out this field" />
             )}
           </FormControl>
         </div>
 
         {/* Mobile Number Section */}
-        <div className="margin-container-register">
+        <div className={classes.marginContainerRegister}>
           <FormControl variant="standard" required>
             <InputLabel htmlFor="mobileNumber">Mobile No.</InputLabel>
             <Input
@@ -278,21 +263,21 @@ const Register = (props) => {
                 </FormHelperText>
               )}
             {mobileNumber.length === 0 && mobileNumberBlank && (
-              <SnackBarAlert message="Please fill out this field" />
+              <FieldValidationSnackbar message="Please fill out this field" />
             )}
           </FormControl>
         </div>
-        {registerSuccess ? (
+        {attemptedRegister && registerSuccess === true ? (
           <Alert variant="filled" severity="success">
             Registration Successful
           </Alert>
-        ) : (
+        ) : attemptedRegister && registerSuccess === false ? (
           <Alert variant="filled" severity="error">
             Registration Failed
           </Alert>
-        )}
+        ) : null}
         {/* Button Section */}
-        <div className="button-margin-container-register">
+        <div className={classes.buttonMarginContainerRegister}>
           <Button variant="contained" color="primary" type="submit">
             Register
           </Button>
